@@ -1,0 +1,22 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(user, "User", "A user with an account.")
+
+Container_Ext(auth, "Identity provider", "Auth0", "The identity provider for authorization.")
+
+System_Boundary(boundry, "Info-map"){
+	Container(spa, "Single-Page Application", "Container: React + TypeScript", "Provides the info-map functionality to the user via the web browser.")
+	Container(api, "API Application", "Spring MVC + Java", "Provides data to the front-end and controls authorization.")
+	ContainerDb(db, "Database", "PostgreSQL", "Stores users info-map data.")
+	ContainerDb(cache, "Cache", "Redis", "Caches already retrieved data for faster respone time.")
+}
+Rel(user, spa, "Views their info-map, and makes changes to it.")
+Rel(spa, api, "Makes API calls to", "JSON/HTTPS")
+Rel(api, auth, "Makes API calls to", "JSON/HTTPS")
+Rel(api, cache, "Reads from and writes to")
+Rel(api, db, "Reads from and writes to")
+
+@enduml
