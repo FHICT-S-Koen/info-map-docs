@@ -4,7 +4,7 @@
 LAYOUT_WITH_LEGEND()
 
 Person(user, "User", "A user with an account.")
-System(info_map, "Info-map")
+System(info_map, "Info-map", "Provides a map where the user can save their notes.")
 
 Rel(user, info_map, "Views there info-map, and makes changes to it.")
 @enduml

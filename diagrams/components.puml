@@ -3,8 +3,19 @@
 
 LAYOUT_WITH_LEGEND()
 
-Person(user, "User", "A user with an account.")
-System(info_map, "Info-map")
+Container(spa, "Single-Page Application", "React + TypeScript", "Provides the info-map functionality to the user via the web browser.")
 
-Rel(user, info_map, "Views there info-map, and makes changes to it.")
+Container_Boundary(boundry, "API Application"){
+	Component(authController, "Sign in Controller", "Spring MVC Rest Controller")
+}
+ContainerDb(cache, "Cache", "Redis", "Caches already retrieved data for faster respone time.")
+ContainerDb(db, "Database", "PostgreSQL", "Stores users info-map data.")
+Container_Ext(auth, "Identity provider", "Auth0", "The identity provider for authorization.")
+
+Rel(spa, authController, "Makes API calls to", "JSON/HTTPS")
+Rel(spa, api, "Makes API calls to", "JSON/HTTPS")
+Rel(authController, auth, "Makes API calls to", "JSON/HTTPS")
+Rel(api, cache, "Reads from and writes to")
+Rel(api, db, "Reads from and writes to")
+
 @enduml
