@@ -9,18 +9,20 @@ System_Ext(auth, "Identity provider", "The identity provider for authorization."
 
 System_Boundary(boundry, "Info-map"){
 	Container(spa, "Single-Page Application", "React + TypeScript", "Provides the info-map functionality to the user via the web browser.")
-	Container(api, "API Gateway Application", "Spring MVC + Java", "Provides data to the front-end and controls authorization.")
-	Container(micro, "Microservice Application", "Rust + Actix", "Retrieves the users info-map.")
-	ContainerDb(db, "Database", "PostgreSQL", "Stores users info-map data.")
-	ContainerDb(cache, "Cache", "Redis", "Caches already retrieved data for faster respone time.")
+	Container(api, "API Gateway Application", "Spring MVC + Java + Redis", "Provides data to the front-end, controls caching and authorization.")
+	Container(note_service, "Microservice Application", "Rust + Actix", "Retrieves the info-map notes.")
+	ContainerDb(note_db, "Database", "PostgreSQL", "Stores users info-map data.")
+	Container(map_service, "Microservice Application", "Rust + Actix", "Retrieves the users info-map.")
+	ContainerDb(map_db, "Database", "PostgreSQL", "Stores users info-map data.")
 }
 Rel(user, spa, "Views their info-map, and makes changes to it.")
 
 Rel(spa, api, "Makes API calls to", "JSON/HTTPS")
 
 Rel(api, auth, "Makes API calls to", "JSON/HTTPS")
-Rel(api, cache, "Reads from and writes to")
-Rel(api, micro, "Makes API calls to", "JSON/HTTPS")
+Rel(api, note_service, "Makes API calls to", "JSON/HTTPS")
+Rel(api, map_service, "Makes API calls to", "JSON/HTTPS")
 
-Rel(micro, db, "Reads from and writes to")
+Rel(note_service, note_db, "Reads from and writes to")
+Rel(map_service, map_db, "Reads from and writes to")
 @enduml
