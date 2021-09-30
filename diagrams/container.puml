@@ -10,21 +10,21 @@ System_Ext(auth, "Identity provider", "The identity provider for authorization."
 System_Boundary(boundry, "Info-map"){
 	Container(spa, "Single-Page Application", "React + TypeScript", "Provides the info-map functionality to the user via the web browser.")
 
-	Container(api, "API Gateway", "Spring MVC + Java + Redis", "Provides data to the front-end, controls caching and authorization.")
+	Container(api, "Discovery Service", "Java + Spring Eruka", "Discovers avaible microservices.")
 	
-	Container(map_service, "Map: Microservice", "Rust + Actix", "Retrieves the users info-maps.")
-	ContainerDb(map_db, "Map: Database", "PostgreSQL", "Stores users info-map data.")
+	Container(map_service, "Map: Microservice", "Java + Spring MVC", "Retrieves the users maps.")
+	ContainerDb(map_db, "Map: Database", "PostgreSQL", "Stores users maps.")
 
-	Container(note_service, "Notes: Microservice", "Rust + Actix", "Retrieves the info-map notes.")
-	ContainerDb(note_db, "Note: Database", "PostgreSQL", "Stores users info-map data.")
+	Container(note_service, "Notes: Microservice", "Java + Spring MVC", "Retrieves the map notes.")
+	ContainerDb(note_db, "Note: Database", "PostgreSQL", "Stores note position and size data.")
 
-	Container(component_service, "Component: Microservice", "Rust + Actix", "Retrieves the info-map notes.")
-	ContainerDb(component_db, "Component: Database", "PostgreSQL", "Stores users info-map data.")
+	Container(component_service, "Component: Microservice", "Rust + Actix", "Retrieves the notes components.")
+	ContainerDb(component_db, "Component: Database", "PostgreSQL", "Stores component position and size data.")
 
-	Container(text_service, "Text: Microservice", "Rust + Actix", "Retrieves the users info-map.")
+	Container(text_service, "Text: Microservice", "Rust + Actix", "Retrieves the component text data.")
 	ContainerDb(text_db, "Text: Database", "PostgreSQL", "Stores users info-map data.")
 
-	Container(image_service, "Image: Microservice", "Rust + Actix", "Retrieves the users info-map.")
+	Container(image_service, "Image: Microservice", "Rust + Actix", "Retrieves the component image data.")
 	ContainerDb(image_db, "Image: Database", "PostgreSQL", "Stores users info-map data.")
 }
 Rel(user, spa, "Views their info-map, and makes changes to it.")
@@ -32,10 +32,10 @@ Rel(user, spa, "Views their info-map, and makes changes to it.")
 Rel(spa, api, "Makes API calls to", "JSON/HTTPS")
 Rel(spa, auth, "Makes API calls to", "JSON/HTTPS")
 
-Rel(api, map_service, "Makes API calls to", "JSON/HTTPS")
+Rel(spa, map_service, "Makes API calls to", "JSON/HTTPS")
 Rel(map_service, map_db, "Reads from and writes to")
 
-Rel(api, note_service, "Makes API calls to", "JSON/HTTPS")
+Rel(spa, note_service, "Makes API calls to", "JSON/HTTPS")
 Rel(note_service, component_service, "Makes API calls to", "JSON/HTTPS")
 Rel(note_service, note_db, "Makes API calls to", "JSON/HTTPS")
 
