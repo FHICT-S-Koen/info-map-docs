@@ -6,6 +6,7 @@ LAYOUT_WITH_LEGEND()
 Person(user, "User", "A user with an account.")
 
 System_Ext(auth, "Identity provider", "The identity provider for authorization.")
+System_Ext(cdn, "CDN", "The cdn stores the notes images.")
 
 System_Boundary(boundry, "Info-map"){
 	Container(spa, "Single-Page Application", "React + TypeScript", "Provides the info-map functionality to the user via the web browser.")
@@ -15,17 +16,8 @@ System_Boundary(boundry, "Info-map"){
 	Container(map_service, "Map: Microservice", "Java + Spring MVC", "Retrieves the users maps.")
 	ContainerDb(map_db, "Map: Database", "PostgreSQL", "Stores users maps.")
 
-	Container(note_service, "Notes: Microservice", "Java + Spring MVC", "Retrieves the map notes.")
-	ContainerDb(note_db, "Note: Database", "PostgreSQL", "Stores note position and size data.")
-
-	Container(component_service, "Component: Microservice", "Rust + Actix", "Retrieves the notes components.")
-	ContainerDb(component_db, "Component: Database", "PostgreSQL", "Stores component position and size data.")
-
-	Container(text_service, "Text: Microservice", "Rust + Actix", "Retrieves the component text data.")
-	ContainerDb(text_db, "Text: Database", "PostgreSQL", "Stores users info-map data.")
-
-	Container(image_service, "Image: Microservice", "Rust + Actix", "Retrieves the component image data.")
-	ContainerDb(image_db, "Image: Database", "PostgreSQL", "Stores users info-map data.")
+	Container(note_service, "Notes: Microservice", "Rust + Rocket", "Retrieves the map notes.")
+	ContainerDb(note_db, "Note: Database", "PostgreSQL", "Stores note data.")
 }
 Rel(user, spa, "Views their info-map, and makes changes to it.")
 
@@ -33,16 +25,9 @@ Rel(spa, api, "Makes API calls to", "JSON/HTTPS")
 Rel(spa, auth, "Makes API calls to", "JSON/HTTPS")
 
 Rel(spa, map_service, "Makes API calls to", "JSON/HTTPS")
-Rel(map_service, map_db, "Reads from and writes to")
+Rel(map_service, map_db, "Reads from and writes to.")
 
 Rel(spa, note_service, "Makes API calls to", "JSON/HTTPS")
-Rel(note_service, component_service, "Makes API calls to", "JSON/HTTPS")
-Rel(note_service, note_db, "Makes API calls to", "JSON/HTTPS")
-
-Rel(component_service, image_service, "Makes API calls to", "JSON/HTTPS")
-Rel(component_service, text_service, "Makes API calls to", "JSON/HTTPS")
-
-Rel(component_service, component_db, "Reads from and writes to")
-Rel(text_service, text_db, "Reads from and writes to")
-Rel(image_service, image_db, "Reads from and writes to")
+Rel(note_service, cdn, "Makes API calls to", "JSON/HTTPS")
+Rel(note_service, note_db, "Reads from and writes to.")
 @enduml
