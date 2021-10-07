@@ -16,7 +16,7 @@ System_Boundary(boundry, "Info-map"){
 	Container(map_service, "Map: Microservice", "Java + Spring MVC", "Retrieves the users maps.")
 	ContainerDb(map_db, "Map: Database", "PostgreSQL", "Stores users maps.")
 
-	Container(note_service, "Notes: Microservice", "Rust + Rocket", "Retrieves the map notes.")
+	Container(note_service, "Notes: Microservice", "Rust + Actix-web", "Retrieves the map notes.")
 	ContainerDb(note_db, "Note: Database", "PostgreSQL", "Stores note data.")
 }
 Rel(user, spa, "Views their info-map, and makes changes to it.")
@@ -27,7 +27,7 @@ Rel(spa, auth, "Makes API calls to", "JSON/HTTPS")
 Rel(spa, map_service, "Makes API calls to", "JSON/HTTPS")
 Rel(map_service, map_db, "Reads from and writes to.")
 
-Rel(spa, note_service, "Makes API calls to", "JSON/HTTPS")
+Rel(spa, note_service, "Makes API calls to", "JSON/HTTPS/WSS")
 Rel(note_service, cdn, "Makes API calls to", "JSON/HTTPS")
 Rel(note_service, note_db, "Reads from and writes to.")
 @enduml
